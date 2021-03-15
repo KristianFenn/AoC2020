@@ -1,23 +1,23 @@
-inputFile = open("Day 6\\input.txt", "r")
-input = inputFile.readlines()
-inputFile.close()
+input_file = open("Day 6\\input.txt", "r")
+input = input_file.readlines()
+input_file.close()
 
-groupAnswers = ""
-groups = list()
+group_answers = ""
+groups = []
 
 for line in input:
     if line.strip() == "":
-        groups.append(groupAnswers)
-        groupAnswers = ""
+        groups.append(group_answers)
+        group_answers = ""
     else:
-        groupAnswers += line
+        group_answers += line
 
-groups.append(groupAnswers)
+groups.append(group_answers)
 
-commonAnswers = list()
+common_answers = []
 
 for group in groups:
     people = [set(person) for person in group.splitlines()]
-    commonAnswers.append(set.intersection(*people))
+    common_answers.append(set.intersection(*people))
 
-print(sum([len(answers) for answers in commonAnswers]))
+print(sum([len(answers) for answers in common_answers]))

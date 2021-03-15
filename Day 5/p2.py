@@ -1,44 +1,44 @@
-inputFile = open("Day 5\\input.txt", "r")
-input = inputFile.read().splitlines()
-inputFile.close()
+input_file = open("Day 5\\input.txt", "r")
+input = input_file.read().splitlines()
+input_file.close()
 
-numRows = 128
-numColumns = 8
-seatIds = list()
+now_rows = 128
+num_cols = 8
+seat_ids = []
 
-for seatPos in input:
-    rowSpecifier = seatPos[0:7]
-    columnSpecifier = seatPos[7:10]
+for seat_pos in input:
+    row_spec = seat_pos[0:7]
+    col_spec = seat_pos[7:10]
 
-    rowStep = numRows / 2
-    minRow = 0
-    maxRow = numRows - 1
+    row_step = now_rows / 2
+    row_min = 0
+    row_max = now_rows - 1
 
-    for rowChar in rowSpecifier:
+    for rowChar in row_spec:
         if rowChar == "F":
-            maxRow -= rowStep
+            row_max -= row_step
         elif rowChar == "B":
-            minRow += rowStep
-        rowStep /= 2
+            row_min += row_step
+        row_step /= 2
 
-    colStep = numColumns / 2
+    colStep = num_cols / 2
     minCol = 0
-    maxCol = numColumns - 1
+    maxCol = num_cols - 1
 
-    for colChar in columnSpecifier:
+    for colChar in col_spec:
         if colChar == "L":
             maxCol -= colStep
         elif colChar == "R":
             minCol += colStep
         colStep /= 2
 
-    seatId = (minRow * 8) + minCol
+    seat_id = (row_min * 8) + minCol
 
-    print(f"Input: {seatPos} Row: {rowSpecifier} {minRow}-{maxRow} Col: {columnSpecifier} {minCol}-{maxCol} Id: {seatId}")
+    print(f"Input: {seat_pos} Row: {row_spec} {row_min}-{row_max} Col: {col_spec} {minCol}-{maxCol} Id: {seat_id}")
     
-    seatIds.append(int(seatId))
+    seat_ids.append(int(seat_id))
 
-for seatId in range(min(seatIds), max(seatIds)):
-    if seatId not in seatIds:
-        print(seatId)
+for seat_id in range(min(seat_ids), max(seat_ids)):
+    if seat_id not in seat_ids:
+        print(seat_id)
         break

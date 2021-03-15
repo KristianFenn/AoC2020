@@ -1,22 +1,22 @@
 import re
 
-inputFile = open("Day 4\\input.txt", "r")
-input = inputFile.read().splitlines()
-inputFile.close()
+input_file = open("Day 4\\input.txt", "r")
+input = input_file.read().splitlines()
+input_file.close()
 
-currentPassport = ""
-passports = list()
-validPassports = list()
-invalidPassports = list()
+current_passport = ""
+passports = []
+valid_passports = []
+invalid_passports = []
 
 for line in input:
     if line == "":
-        passports.append(currentPassport.strip())
-        currentPassport = ""
+        passports.append(current_passport.strip())
+        current_passport = ""
     else:
-        currentPassport += f"{line} "
+        current_passport += f"{line} "
 
-passports.append(currentPassport)
+passports.append(current_passport)
 
 def is_int(val):
     try:
@@ -27,25 +27,25 @@ def is_int(val):
 
 def validate_year(val: str, min: int, max: int):
     if (is_int(val)):
-        yearVal = int(val)
-        return yearVal >= min and yearVal <= max
+        year_val = int(val)
+        return year_val >= min and year_val <= max
     return False
 
 def validate_height(val: str):
-    heightParsed = re.match(r"^([0-9]{2,3})(cm|in)$", val)
+    height_parsed = re.match(r"^([0-9]{2,3})(cm|in)$", val)
 
-    if heightParsed is None:
+    if height_parsed is None:
         return False
 
-    heightVal = int(heightParsed.group(1))
-    heightType = heightParsed.group(2)
+    height_val = int(height_parsed.group(1))
+    height_type = height_parsed.group(2)
 
-    if heightType == "cm":
-        return heightVal >= 150 and heightVal <= 193
-    elif heightType == "in":
-        return heightVal >= 59 and heightVal <= 76
+    if height_type == "cm":
+        return height_val >= 150 and height_val <= 193
+    elif height_type == "in":
+        return height_val >= 59 and height_val <= 76
 
-validEyeColours = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
+valid_eye_colours = ["amb", "blu", "brn", "gry", "grn", "hzl", "oth"]
 
 validators = {
     "byr": lambda byr: validate_year(byr, 1920, 2002),
@@ -53,27 +53,27 @@ validators = {
     "eyr": lambda eyr: validate_year(eyr, 2020, 2030),
     "hgt": lambda hgt: validate_height(hgt),
     "hcl": lambda hcl: re.match(r"^#[0-9a-f]{6}$", hcl) is not None,
-    "ecl": lambda ecl: ecl in validEyeColours,
+    "ecl": lambda ecl: ecl in valid_eye_colours,
     "pid": lambda pid: re.match(r"^[0-9]{9}$", pid),
     "cid": lambda cid: True,
 }
 
-requiredFields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
+required_fields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 
 for passport in passports:
-    passportFields = passport.split()
-    passportInvalidFields = requiredFields.copy()
+    passport_fields = passport.split()
+    passport_invalid_fields = required_fields.copy()
 
-    for field in passportFields:
-        fieldName,fieldVal = field.split(":")
-        isValid = validators[fieldName](fieldVal)
+    for field in passport_fields:
+        field_name,field_val = field.split(":")
+        isValid = validators[field_name](field_val)
         
-        if isValid and fieldName in passportInvalidFields:
-            passportInvalidFields.remove(fieldName)
+        if isValid and field_name in passport_invalid_fields:
+            passport_invalid_fields.remove(field_name)
     
-    if len(passportInvalidFields) == 0:
-        validPassports.append(passport)
+    if len(passport_invalid_fields) == 0:
+        valid_passports.append(passport)
     else:
-        invalidPassports.append(f"{passport} Invalid fields: {passportInvalidFields}")
+        invalid_passports.append(f"{passport} Invalid fields: {passport_invalid_fields}")
 
-print(len(validPassports))
+print(len(valid_passports))

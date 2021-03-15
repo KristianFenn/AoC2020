@@ -1,19 +1,19 @@
-inputFile = open("Day 6\\input.txt", "r")
-input = inputFile.read().splitlines()
-inputFile.close()
+input_file = open("Day 6\\input.txt", "r")
+input = input_file.read().splitlines()
+input_file.close()
 
-groupAnswers = ""
-groups = list()
+group_answers = ""
+groups = []
 
 for line in input:
     if line == "":
-        groups.append(groupAnswers)
-        groupAnswers = ""
+        groups.append(group_answers)
+        group_answers = ""
     else:
-        groupAnswers += line
+        group_answers += line
 
-groups.append(groupAnswers)
+groups.append(group_answers)
 
-answersPerGroup = [len(set(group)) for group in groups]
+answers_per_group = [len(set(group)) for group in groups]
 
-print(sum(answersPerGroup))
+print(sum(answers_per_group))

@@ -1,44 +1,44 @@
 import re
 
-inputFile = open("Day 7\\input.txt", "r")
-input = inputFile.read().splitlines()
-inputFile.close()
+input_file = open("Day 7\\input.txt", "r")
+input = input_file.read().splitlines()
+input_file.close()
 
-childBagRe = r"([0-9]) ([a-z ]+) bags?"
+child_bag_re = r"([0-9]) ([a-z ]+) bags?"
 
 class Bag:
-    _childBagDefs = ""
+    _child_bag_defs = ""
     name = ""
-    contains = list()
+    contains = []
 
-    def __init__(self, bagDef: str):
-        split = bagDef.split(" bags contain ")
+    def __init__(self, bag_def: str):
+        split = bag_def.split(" bags contain ")
         self.name = split[0]
-        self._childBagDefs = re.findall(childBagRe, split[1])
+        self._child_bag_defs = re.findall(child_bag_re, split[1])
 
     def __repr__(self):
         return f"{self.name} {self.contains}"
 
-    def setContains(self, bagList):
-        containedBagNames = [bagDef[1] for bagDef in self._childBagDefs]
-        self.contains = [bag for bag in bagList if bag.name in containedBagNames]
+    def set_contains(self, bag_list):
+        containedBagNames = [bagDef[1] for bagDef in self._child_bag_defs]
+        self.contains = [bag for bag in bag_list if bag.name in containedBagNames]
 
-    def canContainBag(self, bag):
+    def can_contain_bag(self, bag):
         if bag in self.contains:
             return True
         else:
             for child in self.contains:
-                if child.canContainBag(bag):
+                if child.can_contain_bag(bag):
                     return True
 
         return False
 
-bags = [Bag(bagDef) for bagDef in input]
+bags = [Bag(bag_def) for bag_def in input]
 
 for bag in bags:
-    bag.setContains(bags)
+    bag.set_contains(bags)
 
-shinyGold =  next(bag for bag in bags if bag.name == "shiny gold")
-canContain = [bag for bag in bags if bag.canContainBag(shinyGold)]
+shiny_gold =  next(bag for bag in bags if bag.name == "shiny gold")
+can_contain = [bag for bag in bags if bag.can_contain_bag(shiny_gold)]
 
-print(len(canContain))
+print(len(can_contain))

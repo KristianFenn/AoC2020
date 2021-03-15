@@ -1,41 +1,39 @@
-inputFile = open("Day 5\\input.txt", "r")
-input = inputFile.read().splitlines()
-inputFile.close()
+input_file = open("Day 5\\input.txt", "r")
+input = input_file.read().splitlines()
+input_file.close()
 
-numRows = 128
-numColumns = 8
-seatIds = list()
+num_rows = 128
+num_cols = 8
+seat_ids = []
 
-for seatPos in input:
-    rowSpecifier = seatPos[0:7]
-    columnSpecifier = seatPos[7:10]
+for seat_pos in input:
+    row_spec = seat_pos[0:7]
+    col_spec = seat_pos[7:10]
 
-    rowStep = numRows / 2
-    minRow = 0
-    maxRow = numRows - 1
+    row_step = num_rows / 2
+    row_min = 0
+    row_max = num_rows - 1
 
-    for rowChar in rowSpecifier:
-        if rowChar == "F":
-            maxRow -= rowStep
-        elif rowChar == "B":
-            minRow += rowStep
-        rowStep /= 2
+    for row_char in row_spec:
+        if row_char == "F":
+            row_max -= row_step
+        elif row_char == "B":
+            row_min += row_step
+        row_step /= 2
 
-    colStep = numColumns / 2
-    minCol = 0
-    maxCol = numColumns - 1
+    col_step = num_cols / 2
+    col_min = 0
+    col_max = num_cols - 1
 
-    for colChar in columnSpecifier:
-        if colChar == "L":
-            maxCol -= colStep
-        elif colChar == "R":
-            minCol += colStep
-        colStep /= 2
+    for col_char in col_spec:
+        if col_char == "L":
+            col_max -= col_step
+        elif col_char == "R":
+            col_min += col_step
+        col_step /= 2
 
-    seatId = (minRow * 8) + minCol
-
-    print(f"Input: {seatPos} Row: {rowSpecifier} {minRow}-{maxRow} Col: {columnSpecifier} {minCol}-{maxCol} Id: {seatId}")
+    seat_id = int((row_min * 8) + col_min)
     
-    seatIds.append(seatId)
+    seat_ids.append(seat_id)
 
-print(max(seatIds))
+print(max(seat_ids))

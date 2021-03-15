@@ -1,11 +1,11 @@
-inputFile = open("Day 1\input.txt", "r")
-input = [int(x) for x in inputFile.readlines()]
-inputFile.close()
+input_file = open("Day 1\input.txt", "r")
+input = [int(x) for x in input_file.readlines()]
+input_file.close()
 
-for num1Index in range(0, len(input)):
-    for num2Index in range(num1Index + 1, len(input)):
-        num1 = input[num1Index]
-        num2 = input[num2Index]
-        if (num1 + num2 == 2020):
-            print(num1 * num2)
+for num_1_index in range(0, len(input)):
+    for num_2_index in range(num_1_index + 1, len(input)):
+        num_1 = input[num_1_index]
+        num_2 = input[num_2_index]
+        if (num_1 + num_2 == 2020):
+            print(num_1 * num_2)
             exit()

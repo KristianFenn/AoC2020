@@ -1,10 +1,10 @@
 from functools import reduce
 
-inputFile = open("Day 3\input.txt", "r")
-input = inputFile.read().splitlines()
-inputFile.close()
+input_file = open("Day 3\input.txt", "r")
+input = input_file.read().splitlines()
+input_file.close()
 
-slopeMap = list(map(lambda x: list(x), input))
+slope_map = [list(x) for x in input]
 
 trajectories = [
     [1, 1],
@@ -14,24 +14,23 @@ trajectories = [
     [1, 2]
 ]
 
-treeCounts = list()
-width = len(slopeMap[0])
+tree_counts = []
+width = len(slope_map[0])
 
 for traj in trajectories:
-    rightStep = traj[0]
-    downStep = traj[1]
+    right_step,down_step = traj
     right = 0
-    treeCount = 0
+    tree_count = 0
 
-    for down in range(0, len(slopeMap), downStep):
-        itemAtLocation = slopeMap[down][right]
+    for down in range(0, len(slope_map), down_step):
+        item_at_location = slope_map[down][right]
 
-        if itemAtLocation == "#":
-            treeCount += 1
+        if item_at_location == "#":
+            tree_count += 1
 
-        right = (right + rightStep) % width
+        right = (right + right_step) % width
     
-    treeCounts.append(treeCount)
+    tree_counts.append(tree_count)
 
-finalTreeCount = reduce(lambda x, y: x * y, treeCounts)
-print(finalTreeCount)
+final_tree_count = reduce(lambda x, y: x * y, tree_counts)
+print(final_tree_count)
