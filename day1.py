@@ -1,3 +1,6 @@
+from itertools import permutations
+from functools import reduce
+
 def part_1(input: str):
     input = [int(x) for x in input]
 
@@ -19,3 +22,8 @@ def part_2(input):
                 num_3 = input[num_3_index]
                 if (num_1 + num_2 + num_3 == 2020):
                     return num_1 * num_2 * num_3
+
+def day_1_fancy(input: str, premutation_size: int):
+    input = [int(x) for x in input]
+    val = next(val for val in permutations(input, premutation_size) if sum(val) == 2020)
+    return reduce(lambda x, y: x * y, val)
