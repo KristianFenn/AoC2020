@@ -17,7 +17,7 @@ groups.append(groupAnswers)
 commonAnswers = list()
 
 for group in groups:
-    people = map(lambda x: set(x), group.splitlines())
+    people = [set(person) for person in group.splitlines()]
     commonAnswers.append(set.intersection(*people))
 
-print(sum(map(lambda x: len(x), commonAnswers)))
+print(sum([len(answers) for answers in commonAnswers]))

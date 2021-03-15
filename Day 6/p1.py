@@ -14,6 +14,6 @@ for line in input:
 
 groups.append(groupAnswers)
 
-answersPerGroup = list(map(lambda group: len(set(group)), groups))
+answersPerGroup = [len(set(group)) for group in groups]
 
 print(sum(answersPerGroup))

@@ -9,12 +9,12 @@ invalidPasswords = list()
 
 for line in input:
     split = re.split(r"-| |: ", line)
-    
+
     minOccurance = int(split[0])
     maxOccurance = int(split[1])
     expectedLetter = split[2]
     password = split[3]
-    occurances = list(filter(lambda x: x == expectedLetter, password))
+    occurances = [char for char in password if char == expectedLetter]
 
     if len(occurances) >= minOccurance and len(occurances) <= maxOccurance:
         validPasswords.append(password)

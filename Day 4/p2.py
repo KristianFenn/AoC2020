@@ -65,11 +65,9 @@ for passport in passports:
     passportInvalidFields = requiredFields.copy()
 
     for field in passportFields:
-        fieldSplit = field.split(":")
-        fieldName = fieldSplit[0]
-        fieldVal = fieldSplit[1]
-        
+        fieldName,fieldVal = field.split(":")
         isValid = validators[fieldName](fieldVal)
+        
         if isValid and fieldName in passportInvalidFields:
             passportInvalidFields.remove(fieldName)
     

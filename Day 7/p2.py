@@ -14,22 +14,23 @@ class Bag:
     def __init__(self, bagDef: str):
         split = bagDef.split(" bags contain ")
         self.name = split[0]
-        self._childBagDefs = re.findall(childBagRe, split[1])
+        self._childBagDefs = [
+            { "count": int(bagDef[0]), "bagName": bagDef[1] } for bagDef in re.findall(childBagRe, split[1])
+        ]
         self.contains = list()
 
     def __repr__(self):
         return f"{self.name} {self.contains}"
 
     def setContains(self, bagList):
-        for childBag in self._childBagDefs:
-            containedBag = next(filter(lambda bag: bag.name == childBag[1], bagList))
+        for childBagDef in self._childBagDefs:
             self.contains.append({
-                "count": int(childBag[0]), 
-                "bag": containedBag
+                "count": childBagDef["count"], 
+                "bag": next(bag for bag in bagList if bag.name == childBagDef["bagName"])
             })
 
     def canContainBag(self, bag):
-        containedBags = list(map(lambda childBag: childBag["bag"], self.contains))
+        containedBags = [childBag["bag"] for childBag in self.contains]
         if bag in containedBags:
             return True
         else:
@@ -48,11 +49,11 @@ class Bag:
         return total
         
 
-bags = list(map(lambda bagDef: Bag(bagDef), input))
+bags = [Bag(bagDef) for bagDef in input]
 
 for bag in bags:
     bag.setContains(bags)
 
-shinyGold = next(filter(lambda bag: bag.name == "shiny gold", bags))
+shinyGold = next(bag for bag in bags if bag.name == "shiny gold")
 
 print(shinyGold.noContainedBags())

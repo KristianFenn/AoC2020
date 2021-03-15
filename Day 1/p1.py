@@ -1,5 +1,5 @@
 inputFile = open("Day 1\input.txt", "r")
-input = list(map(lambda x: int(x), inputFile.readlines()))
+input = [int(x) for x in inputFile.readlines()]
 inputFile.close()
 
 for num1Index in range(0, len(input)):

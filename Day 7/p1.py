@@ -20,8 +20,8 @@ class Bag:
         return f"{self.name} {self.contains}"
 
     def setContains(self, bagList):
-        containedBagName = list(map(lambda bagDef: bagDef[1], self._childBagDefs))
-        self.contains = list(filter(lambda bag: bag.name in containedBagName, bagList))
+        containedBagNames = [bagDef[1] for bagDef in self._childBagDefs]
+        self.contains = [bag for bag in bagList if bag.name in containedBagNames]
 
     def canContainBag(self, bag):
         if bag in self.contains:
@@ -33,13 +33,12 @@ class Bag:
 
         return False
 
-bags = list(map(lambda bagDef: Bag(bagDef), input))
+bags = [Bag(bagDef) for bagDef in input]
 
 for bag in bags:
     bag.setContains(bags)
 
-shinyGold = next(filter(lambda bag: bag.name == "shiny gold", bags))
+shinyGold =  next(bag for bag in bags if bag.name == "shiny gold")
+canContain = [bag for bag in bags if bag.canContainBag(shinyGold)]
 
-canContain = filter(lambda bag: bag.canContainBag(shinyGold), bags)
-
-print(len(list(canContain)))
+print(len(canContain))
