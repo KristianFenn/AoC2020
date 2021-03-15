@@ -1,6 +1,6 @@
 from functools import reduce
 
-input_file = open("Day 3\input.txt", "r")
+input_file = open("Day 3\\input.txt", "r")
 input = input_file.read().splitlines()
 input_file.close()
 

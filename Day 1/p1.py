@@ -1,4 +1,4 @@
-input_file = open("Day 1\input.txt", "r")
+input_file = open("Day 1\\input.txt", "r")
 input = [int(x) for x in input_file.readlines()]
 input_file.close()
 

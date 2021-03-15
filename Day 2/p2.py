@@ -1,6 +1,6 @@
 import re
 
-input_file = open("Day 2\input.txt", "r")
+input_file = open("Day 2\\input.txt", "r")
 input = input_file.read().splitlines()
 input_file.close()
 
