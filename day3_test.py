@@ -19,8 +19,6 @@ example_input = """\
 .#..#...#.#
 """.splitlines()
 
-print(example_input)
-
 class Part1Tests(unittest.TestCase):
     def test_part_1_example_input(self):
         result = part_1(example_input)
