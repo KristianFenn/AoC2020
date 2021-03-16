@@ -62,7 +62,7 @@ class SeatSim:
     def valid_tile_coordinate(self, row, col):
         return row >= 0 and row < self.height and col >= 0 and col < self.width
 
-    def search_until_seat(self, row_start, col_start, row_offset, col_offset):
+    def find_seat_in_direction(self, row_start, col_start, row_offset, col_offset):
         row = row_start + row_offset
         col = col_start + col_offset
 
@@ -80,7 +80,7 @@ class SeatSim:
 
         for cell in self:
             if not is_seat(cell.tile):
-                    continue
+                continue
 
             seats_to_consider = []
 
@@ -91,12 +91,11 @@ class SeatSim:
                         seats_to_consider.append((can_row, can_col))
             elif occupancy_mode == OccupancyMode.LINE_OF_SIGHT:
                 for row_offset,col_offset in directions:
-                    found_seat = self.search_until_seat(cell.row, cell.col, row_offset, col_offset)
+                    found_seat = self.find_seat_in_direction(cell.row, cell.col, row_offset, col_offset)
                     if found_seat is not None:
                         seats_to_consider.append(found_seat)
                 
             self.considered_seats[cell.row][cell.col] = seats_to_consider
-
 
     def count_occupied_considered_seats(self, tile):
         considered_seats_for_cell = self.considered_seats[tile.row][tile.col]
