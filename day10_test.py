@@ -81,7 +81,5 @@ class Part2Tests(unittest.TestCase):
         result = part_2(input)
         self.assertEqual(result, 148098383347712)
 
-
-
 if __name__ == '__main__':
     unittest.main()
