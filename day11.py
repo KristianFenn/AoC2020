@@ -44,6 +44,7 @@ class SeatSim:
     height = 0
     width = 0
     unchanged_last_iteration = False
+    occupancy_mode = OccupancyMode.ADJACENCY
 
     def __init__(self, input, occupancy_mode):
         self.height = len(input)
@@ -51,6 +52,7 @@ class SeatSim:
         self.tiles = [list(x) for x in input]
         self.considered_seats = [[None for col in range(self.width)] for row in range(self.height)]
         self.unchanged_last_iteration = False
+        self.occupancy_mode = occupancy_mode
 
         self.calculate_considered_seats(occupancy_mode)
 
@@ -59,21 +61,42 @@ class SeatSim:
 
     def valid_tile_coordinate(self, row, col):
         return row >= 0 and row < self.height and col >= 0 and col < self.width
+
+    def search_until_seat(self, row_start, col_start, row_offset, col_offset):
+        row = row_start + row_offset
+        col = col_start + col_offset
+
+        while self.valid_tile_coordinate(row, col):
+            if is_seat(self.tiles[row][col]):
+                return (row, col)
+            
+            row += row_offset
+            col += col_offset
+        
+        return None
     
     def calculate_considered_seats(self, occupancy_mode):
-        if (occupancy_mode == OccupancyMode.ADJACENCY):
-            for cell in self:
-                if not is_seat(cell.tile):
+        directions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
+
+        for cell in self:
+            if not is_seat(cell.tile):
                     continue
 
-                candidate_seats = [(row, col) for row in (cell.row + -1, cell.row, cell.row + 1) for col in (cell.col + -1, cell.col, cell.col + 1)]
-                candidate_seats.remove((cell.row, cell.col)) # we don't want to consider ourselves
-                seats_to_consider = []
+            seats_to_consider = []
+
+            if occupancy_mode == OccupancyMode.ADJACENCY:
+                candidate_seats = [(cell.row + row_dir, cell.col + col_dir) for row_dir, col_dir in directions]
                 for can_row,can_col in candidate_seats:
                     if self.valid_tile_coordinate(can_row, can_col) and is_seat(self.tiles[can_row][can_col]):
                         seats_to_consider.append((can_row, can_col))
+            elif occupancy_mode == OccupancyMode.LINE_OF_SIGHT:
+                for row_offset,col_offset in directions:
+                    found_seat = self.search_until_seat(cell.row, cell.col, row_offset, col_offset)
+                    if found_seat is not None:
+                        seats_to_consider.append(found_seat)
                 
-                self.considered_seats[cell.row][cell.col] = seats_to_consider
+            self.considered_seats[cell.row][cell.col] = seats_to_consider
+
 
     def count_occupied_considered_seats(self, tile):
         considered_seats_for_cell = self.considered_seats[tile.row][tile.col]
@@ -83,6 +106,7 @@ class SeatSim:
     def run_iteration(self):
         next_tiles =  deepcopy(self.tiles)
         self.unchanged_last_iteration = True
+        seat_empty_threshold = 4 if self.occupancy_mode == OccupancyMode.ADJACENCY else 5
 
         for cell in self:
             if not is_seat(cell.tile):
@@ -95,7 +119,7 @@ class SeatSim:
                     next_tiles[cell.row][cell.col] = TILE_OCCUPIED_SEAT
                     self.unchanged_last_iteration = False
             elif (cell.tile == TILE_OCCUPIED_SEAT):
-                if (occupied_considered_seats >= 4):
+                if (occupied_considered_seats >= seat_empty_threshold):
                     next_tiles[cell.row][cell.col] = TILE_EMPTY_SEAT
                     self.unchanged_last_iteration = False
         
@@ -106,6 +130,14 @@ class SeatSim:
 
 def part_1(input):
     sim = SeatSim(input, OccupancyMode.ADJACENCY)
+
+    while not sim.unchanged_last_iteration:
+        sim.run_iteration()
+    
+    return sim.total_occupied_seats()
+
+def part_2(input):
+    sim = SeatSim(input, OccupancyMode.LINE_OF_SIGHT)
 
     while not sim.unchanged_last_iteration:
         sim.run_iteration()
