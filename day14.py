@@ -10,7 +10,7 @@ def to_bit_array(num):
     if bin_string_len < bit_len:
         bit_string = ("0" * (bit_len - bin_string_len)) + bit_string
     elif bin_string_len > bit_len:
-        bit_string = bit_string[:bit_len]
+        bit_string = bit_string[-bit_len:]
         
     return [x for x in bit_string]
 
