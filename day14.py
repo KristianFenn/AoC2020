@@ -49,7 +49,7 @@ def generate_floating_permutations(bit_array):
             result += generate_floating_permutations(with_one)
             return result
     
-    return ["".join(bit_array)]
+    return [bit_array]
 
 def part_1(input):
     mask = []

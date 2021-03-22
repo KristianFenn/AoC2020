@@ -32,11 +32,14 @@ class Part2Tests(unittest.TestCase):
     def test_floating_permutations(self):
         bit_array = [x for x in "000000000000000000000000000000X1101X"]
         result = generate_floating_permutations(bit_array)
+        expected_results = [list(x) for x in [
+            "000000000000000000000000000000011010",
+            "000000000000000000000000000000011011",
+            "000000000000000000000000000000111010",
+            "000000000000000000000000000000111011"
+        ]]
         assert len(result) == 4
-        assert "000000000000000000000000000000011010" in result
-        assert "000000000000000000000000000000011011" in result
-        assert "000000000000000000000000000000111010" in result
-        assert "000000000000000000000000000000111011" in result
+        assert result == expected_results
 
     def test_apply_floating_mask(self):
         result = apply_floating_mask(42, "000000000000000000000000000000X1001X")
