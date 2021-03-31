@@ -1,5 +1,5 @@
 import unittest
-from day18 import parse_tree, evaluate_tree_node, part_1
+from day18 import parse_tree, evaluate_tree_node, part_1, evalutate_part_2_expr, part_2
 
 expr_1 = "1 + 2 * 3 + 4 * 5 + 6"
 expr_2 = "2 * 3 + (4 * 5)"
@@ -142,3 +142,30 @@ class Part1Tests(unittest.TestCase):
     def test_real_input(self):
         result = part_1(input)
         self.assertEqual(result, 18213007238947)
+
+class EvalutatePart2ExprTests(unittest.TestCase):
+    def test_simple_expr(self):
+        result = int(evalutate_part_2_expr(expr_1))
+        self.assertEqual(result, 231)
+
+    def test_paren_expr(self):
+        result = int(evalutate_part_2_expr(expr_2))
+        self.assertEqual(result, 46)
+    
+    def test_nested_paren_expr(self):
+        result = int(evalutate_part_2_expr(expr_3))
+        self.assertEqual(result, 51)
+    
+    def test_starting_paren_expr(self):
+        result = int(evalutate_part_2_expr(expr_4))
+        self.assertEqual(result, 11666)
+
+class Part2Tests(unittest.TestCase):
+    def test_example_input(self):
+        result = part_2(example_input)
+        self.assertEqual(result, 11994)
+    
+    def test_real_input(self):
+        result = part_2(input)
+        self.assertEqual(result, 388966573054664)
+        
